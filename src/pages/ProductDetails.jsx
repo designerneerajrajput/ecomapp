@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { addCart, addtoCheck } from '../redux/Slice';
-import { addWishlist } from '../redux/Whislist';
+import { addCart } from '../redux/Slice';
+import { busyProduct } from '../redux/productSlice';
+
+import { addWishList, removeWhislist } from '../redux/WishlistSLice';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+
+import { useParams, useNavigate } from 'react-router-dom';
 
 function ProductDetails() {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -20,7 +24,6 @@ function ProductDetails() {
     const dispatch = useDispatch();
     const handleWishlist = () => {
         setWishlistStatus(!wishlistStatus);
-        //if (wishlistStatus) {
         const productToWishlist = {
             id: product.id,
             title: product.title,
@@ -28,17 +31,13 @@ function ProductDetails() {
             image: product.image,
             quantity: 1,
         };
-        dispatch(addWishlist(productToWishlist));
-        //} else {
-        // const productToWishlist = {
-        //     id: product.id,
-        //     title: product.title,
-        //     price: product.price,
-        //     image: product.image,
-        //     quantity: 1,
-        // };
-        // dispatch(addWishlist(productToWishlist));
-        // }
+        if (wishlistStatus) {
+
+            dispatch(addWishList(productToWishlist));
+        } else {
+
+            dispatch(removeWhislist(productToWishlist));
+        }
 
     };
 
@@ -72,6 +71,7 @@ function ProductDetails() {
             quantity: selectQty,
         };
         dispatch(addCart(productToAdd));
+
     };
 
     const updateQty = (type) => {
@@ -81,9 +81,23 @@ function ProductDetails() {
             setSelectQty(selectQty + 1);
         }
     };
+    const buyNow = () => {
+
+        if (product) {
+            const productToBuy = {
+                ...product,
+                quantity: 1,
+            };
+            dispatch(busyProduct(productToBuy)); // Dispatch the "Buy Now" action
+            navigate('/checkout'); // Redirect to the checkout page
+        }
+    };
 
     if (loading) return <p>Loading...</p>;
     if (!product) return <p>Product not found.</p>;
+
+
+
 
     return (
         <section className="product-details">
@@ -115,7 +129,7 @@ function ProductDetails() {
                             <p>{product.description}</p>
 
                             <div className="pro-details-quality">
-                                <td className="product-quantity">
+                                <div className="product-quantity">
                                     <div
                                         className="dec qtybutton"
                                         onClick={() => updateQty(1)}
@@ -132,17 +146,21 @@ function ProductDetails() {
                                     <div className="inc qtybutton" onClick={() => updateQty(2)}>
                                         +
                                     </div>
-                                </td>
+                                </div>
                                 <div className="pro-details-cart btn-hover">
                                     <Link title="Add To Cart" onClick={handleAddToCart}>
                                         <i className="pe-7s-cart"></i>
                                         {isAdded ? "Added!" : "Add to cart"}
                                     </Link>
+                                    <button onClick={buyNow}>Buy Now</button>
                                 </div>
                                 <div className="pro-details-wishlist">
 
 
                                     <button onClick={handleWishlist}><i className={!wishlistStatus ? 'fa fa-heart-o' : 'fa fa-heart whi'}></i></button>
+
+
+
                                 </div>
                                 <div className="pro-details-compare">
                                     <a href="#"><i className="pe-7s-shuffle"></i></a>

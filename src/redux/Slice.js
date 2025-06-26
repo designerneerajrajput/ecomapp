@@ -40,21 +40,21 @@ const cartSlice = createSlice({
 
         },
 
-        addWishlist: (state, action) => {
-            const newItem = action.payload;
-            console.log('teeee', newItem);
+        // addWishlist: (state, action) => {
+        //     const newItem = action.payload;
+        //     console.log('teeee', newItem);
 
-            const existingItem = state.find(item => item.id === newItem.id);
+        //     const existingItem = state.find(item => item.id === newItem.id);
 
-            if (existingItem) {
+        //     if (existingItem) {
 
 
-                existingItem.quantity = newItem.quantity ? newItem.quantity : 1;
-            } else {
-                // Add the item with an initial quantity
-                state.push({ ...newItem, quantity: newItem.quantity });
-            }
-        },
+        //         existingItem.quantity = newItem.quantity ? newItem.quantity : 1;
+        //     } else {
+        //         // Add the item with an initial quantity
+        //         state.push({ ...newItem, quantity: newItem.quantity });
+        //     }
+        // },
 
 
     },

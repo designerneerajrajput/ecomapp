@@ -2,9 +2,18 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 function Checkout() {
-    const cartdata = useSelector((state) => state.cart);
-    const totalPrice = cartdata.reduce((total, item) => total + item.price * item.quantity, 0);
 
+    const cartData = useSelector((state) => state.cart);
+    const buyNowProduct = useSelector((state) => state.product);
+
+
+
+
+
+    const totalPrice = productsToDisplay.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+    );
 
     return (
         <><div className="breadcrumb-area pt-35 pb-35 bg-gray-3">
@@ -204,7 +213,7 @@ function Checkout() {
                                         </div>
                                         <div className="your-order-middle">
                                             <ul>
-                                                {cartdata.map((item, index) => (
+                                                {productsToDisplay.map((item, index) => (
                                                     <li key={index}>
                                                         <span className="order-middle-left">
                                                             {item.title} X {item.quantity}

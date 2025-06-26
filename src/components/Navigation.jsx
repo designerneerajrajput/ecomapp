@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { removeCart } from '../redux/Slice';
 import { CiShoppingCart } from "react-icons/ci";
 
+import { CiHeart } from "react-icons/ci";
 
 import logo from '../assets/img/logo.png';
 import { useState } from 'react';
@@ -33,7 +34,7 @@ function Navigation() {
                         <div className="col-xl-2 col-lg-2 col-md-6 col-4">
                             <div className="logo">
                                 <a href="">
-                                    <img alt="" src={logo} />
+                                    <img alt="logo" src={logo} />
                                 </a>
                             </div>
                         </div>
@@ -52,8 +53,9 @@ function Navigation() {
                         </div>
                         <div className="col-xl-2 col-lg-2 col-md-6 col-8">
                             <div className="header-right-wrap">
-                                <Link to="/wishlist"><i class="far fa-heart"></i></Link>
+
                                 <div className="same-style cart-wrap">
+                                    <Link to="/wishlist"><CiHeart /></Link>
                                     <button className="icon-cart" onClick={handleCartClick}>
                                         <CiShoppingCart />
                                         <span className="count-style">{cartData.length}</span> {/* Cart item count */}
